@@ -12,8 +12,9 @@ const DEFAULT_NAVIGATION = {
   ctaText: 'Get Started',
   ctaHref: '#hero',
   menuItems: [
-    { label: 'Home', href: '#hero' },
+    { label: 'Home', href: '/' },
     { label: 'Features', href: '#features' },
+    { label: 'Pricing', href: '/pricing' },
   ],
 } as const;
 

@@ -3,27 +3,24 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, Play, Zap, TrendingUp, Users } from 'lucide-react';
-import Image from 'next/image';
-import { useState } from 'react';
+import { ArrowRight, Zap, Shield, Rocket } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { useSmartNavigation } from '@/hooks/useSmartNavigation';
 
 const DEFAULT_HERO = {
-  title: 'Transform Your Business with Next-Generation Robotics',
+  title: 'Build the Future with AI-Powered Solutions',
   subtitle:
-    'Cutting-edge robotic solutions that automate complex tasks, increase efficiency, and drive innovation across manufacturing, logistics, and service industries.',
-  ctaText: 'Start Your Automation Journey',
-  ctaHref: '/get-started',
-  secondaryCtaText: 'Watch Demo',
+    'Transform your business with cutting-edge technology that scales. Join thousands of companies already accelerating their growth.',
+  ctaText: 'Start Free Trial',
+  ctaHref: '/signup',
+  secondaryCtaText: 'View Demo',
   secondaryCtaHref: '/demo',
-  heroImageUrl:
-    'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1200&auto=format&fit=crop',
-  heroImageAlt: 'Advanced robotic automation in modern manufacturing facility',
-  badgeText: 'Industry Leader in AI Robotics',
+  badge: '🚀 Now in Beta',
+  features: ['Deploy in minutes', '99.9% uptime SLA', 'Enterprise security'],
   stats: [
-    { icon: 'TrendingUp', value: '300%', label: 'Efficiency Increase' },
-    { icon: 'Users', value: '500+', label: 'Companies Automated' },
-    { icon: 'Zap', value: '24/7', label: 'Continuous Operation' },
+    { label: 'Active Users', value: '50K+' },
+    { label: 'API Calls/Month', value: '10M+' },
+    { label: 'Countries', value: '120+' },
   ],
 } as const;
 
@@ -32,92 +29,112 @@ type HeroProps = Partial<typeof DEFAULT_HERO>;
 export default function Hero(props: HeroProps) {
   const config = { ...DEFAULT_HERO, ...props };
   const navigate = useSmartNavigation();
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
-  const handlePrimaryCTA = () => {
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  const handlePrimaryClick = () => {
     navigate(config.ctaHref);
   };
 
-  const handleSecondaryCTA = () => {
-    setIsVideoPlaying(true);
+  const handleSecondaryClick = () => {
     navigate(config.secondaryCtaHref);
   };
 
-  const getStatIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'TrendingUp':
-        return <TrendingUp className="h-5 w-5" />;
-      case 'Users':
-        return <Users className="h-5 w-5" />;
-      case 'Zap':
-        return <Zap className="h-5 w-5" />;
-      default:
-        return <TrendingUp className="h-5 w-5" />;
-    }
-  };
-
   return (
-    <section id="hero" className="bg-background text-foreground py-20 lg:py-32 overflow-hidden">
+    <section id="hero" className="bg-background text-foreground py-20 lg:py-32">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
-          {/* Content Column */}
-          <div className="space-y-8">
-            {/* Badge */}
-            <div className="flex justify-start">
-              <Badge
-                variant="secondary"
-                className="bg-primary/10 text-primary border-primary/20 px-4 py-2 text-sm font-medium"
-              >
-                <span data-editable="badgeText">{config.badgeText}</span>
-              </Badge>
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Badge */}
+          <div
+            className={`mb-8 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+          >
+            <Badge
+              variant="secondary"
+              className="bg-primary/10 text-primary hover:bg-primary/20 px-4 py-2 text-sm font-medium"
+            >
+              <span data-editable="badge">{config.badge}</span>
+            </Badge>
+          </div>
+
+          {/* Main Heading */}
+          <div
+            className={`mb-6 transition-all duration-700 delay-150 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+          >
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight">
+              <span data-editable="title">{config.title}</span>
+            </h1>
+          </div>
+
+          {/* Subtitle */}
+          <div
+            className={`mb-10 transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+          >
+            <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              <span data-editable="subtitle">{config.subtitle}</span>
+            </p>
+          </div>
+
+          {/* Features List */}
+          <div
+            className={`mb-10 transition-all duration-700 delay-450 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+          >
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+              {config.features.map((feature, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center gap-2 text-sm sm:text-base text-muted-foreground"
+                >
+                  <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
+                  <span data-editable={`features[${idx}]`}>{feature}</span>
+                </div>
+              ))}
             </div>
+          </div>
 
-            {/* Main Heading */}
-            <div className="space-y-6">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
-                <span data-editable="title">{config.title}</span>
-              </h1>
-
-              <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl">
-                <span data-editable="subtitle">{config.subtitle}</span>
-              </p>
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
+          {/* CTA Buttons */}
+          <div
+            className={`mb-16 transition-all duration-700 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+          >
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button
                 size="lg"
-                onClick={handlePrimaryCTA}
+                onClick={handlePrimaryClick}
                 data-editable-href="ctaHref"
                 data-href={config.ctaHref}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-lg font-semibold group"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 text-lg font-semibold group"
               >
                 <span data-editable="ctaText">{config.ctaText}</span>
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
 
               <Button
                 variant="outline"
                 size="lg"
-                onClick={handleSecondaryCTA}
+                onClick={handleSecondaryClick}
                 data-editable-href="secondaryCtaHref"
                 data-href={config.secondaryCtaHref}
-                className="border-border text-foreground hover:bg-accent hover:text-accent-foreground px-8 py-6 text-lg font-semibold group"
+                className="border-border text-foreground hover:bg-accent hover:text-accent-foreground px-8 py-3 text-lg font-semibold"
               >
-                <Play className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
                 <span data-editable="secondaryCtaText">{config.secondaryCtaText}</span>
               </Button>
             </div>
+          </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-6 pt-8">
+          {/* Stats */}
+          <div
+            className={`transition-all duration-700 delay-750 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
               {config.stats.map((stat, idx) => (
-                <Card key={idx} className="bg-card text-card-foreground border-border/50">
-                  <CardContent className="p-4 text-center">
-                    <div className="flex justify-center mb-2 text-primary">
-                      {getStatIcon(stat.icon)}
-                    </div>
-                    <div className="text-2xl font-bold">
+                <Card
+                  key={idx}
+                  className="bg-card text-card-foreground border-border hover:bg-accent/50 transition-colors"
+                >
+                  <CardContent className="p-6 text-center">
+                    <div className="text-2xl sm:text-3xl font-bold text-primary mb-2">
                       <span data-editable={`stats[${idx}].value`}>{stat.value}</span>
                     </div>
                     <div className="text-sm text-muted-foreground">
@@ -128,35 +145,14 @@ export default function Hero(props: HeroProps) {
               ))}
             </div>
           </div>
-
-          {/* Image Column */}
-          <div className="relative">
-            <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-primary/10 to-accent/10 p-8">
-              <Image
-                src={config.heroImageUrl}
-                alt={config.heroImageAlt}
-                data-editable-src="heroImageUrl"
-                width={600}
-                height={400}
-                className="rounded-xl object-cover w-full h-auto shadow-2xl transition-transform hover:scale-105 duration-300"
-                priority
-              />
-
-              {/* Floating Elements */}
-              <div className="absolute -top-4 -right-4 bg-primary text-primary-foreground p-4 rounded-full shadow-lg animate-pulse">
-                <Zap className="h-6 w-6" />
-              </div>
-
-              <div className="absolute -bottom-4 -left-4 bg-accent text-accent-foreground p-4 rounded-full shadow-lg animate-bounce">
-                <TrendingUp className="h-6 w-6" />
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
-      {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
+      {/* Background Elements */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
+      </div>
     </section>
   );
 }
